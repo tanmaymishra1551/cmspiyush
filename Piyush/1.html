@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ELP Parent Open Day</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0f172a;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Twinkling Stars Background */
+        .star-bg {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 0.8; transform: scale(1.2); filter: blur(1px); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), 0 20px 50px rgba(0,0,0,0.3);
+            transform: scale(0.8) translateY(50px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 550px;
+            width: 90%;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 20;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .card.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .btn-enter {
+            background: linear-gradient(45deg, #FF6B6B, #FFD93D);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 30;
+        }
+
+        .btn-enter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Bang Sparkle Animation */
+        .sparkle-star {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+            color: #FFD93D;
+            filter: drop-shadow(0 0 8px #FFD93D);
+        }
+
+        @keyframes sparkle-fall {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) rotate(var(--rot)) scale(var(--s)); opacity: 0; }
+        }
+
+        /* Character Animations */
+        .character-float {
+            animation: character-sway 4s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes character-sway {
+            0%, 100% { transform: rotate(-2deg) translateY(0); }
+            50% { transform: rotate(2deg) translateY(-10px); }
+        }
+
+        .child-wave {
+            animation: wave 2s ease-in-out infinite;
+            transform-origin: 40px 60px;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, #3b82f6, #ec4899, #3b82f6);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .bang-ring {
+            position: absolute;
+            border: 2px solid #FFD93D;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 50;
+            animation: ring-expand 0.8s ease-out forwards;
+        }
+
+        @keyframes ring-expand {
+            0% { width: 0; height: 0; opacity: 1; transform: translate(-50%, -50%); }
+            100% { width: 400px; height: 400px; opacity: 0; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body onload="initStars()">
+
+    <div id="wrapper" class="gradient-bg">
+        <!-- Persistent Background Stars -->
+        <div id="starContainer" class="absolute inset-0 pointer-events-none"></div>
+
+        <!-- Initial Entry View -->
+        <div id="entryView" class="text-center z-10 transition-all duration-1000 max-w-lg px-6">
+            <!-- Animated Parent & Child Illustration -->
+            <div class="character-float mb-6">
+                <svg width="220" height="220" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto">
+                    <!-- Parent Silhouette -->
+                    <circle cx="50" cy="30" r="12" fill="#FF6B6B" />
+                    <path d="M30 100 C 30 60, 70 60, 70 100" fill="#FF6B6B" />
+                    <!-- Child Silhouette -->
+                    <circle cx="85" cy="65" r="9" fill="#FFD93D" />
+                    <path d="M70 100 C 70 80, 100 80, 100 100" fill="#FFD93D" />
+                    <!-- Connecting Heart -->
+                    <path class="animate-pulse" d="M68 45 C 68 40, 78 40, 78 45 C 78 52, 68 58, 68 58 C 68 58, 58 52, 58 45 C 58 40, 68 40, 68 45" fill="#F473B9" />
+                </svg>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Hello, Amazing Parent!</h1>
+            <p class="text-blue-100 mb-10 text-xl opacity-90">Your presence makes our campus shine brighter.</p>
+            <button onclick="revealWelcome(event)" class="btn-enter">Enter the World of ELP</button>
+        </div>
+
+        <!-- Animated Message View -->
+        <div id="welcomeCard" class="card hidden">
+            <!-- Small Animated Icon for the Card -->
+            <div class="mb-4 flex justify-center space-x-[-20px]">
+                <div class="character-float" style="animation-delay: 0.2s">
+                     <svg width="80" height="80" viewBox="0 0 100 100">
+                        <circle cx="50" cy="35" r="15" fill="#6BCB77" />
+                        <path d="M30 100 Q 50 60 70 100" fill="#6BCB77" />
+                     </svg>
+                </div>
+                <div class="character-float child-wave" style="animation-delay: 0.5s">
+                     <svg width="60" height="60" viewBox="0 0 100 100" style="margin-top: 20px;">
+                        <circle cx="50" cy="35" r="15" fill="#4D96FF" />
+                        <path d="M35 100 Q 50 70 65 100" fill="#4D96FF" />
+                     </svg>
+                </div>
+            </div>
+
+            <h2 class="text-xl font-bold text-pink-500 mb-1 tracking-widest uppercase">You are Special!</h2>
+            <h1 class="text-4xl md:text-5xl font-extrabold shimmer mb-6 leading-tight">Welcome to ELP</h1>
+            
+            <div class="h-1 w-20 mx-auto bg-gradient-to-r from-blue-400 via-yellow-400 to-pink-400 rounded-full mb-8"></div>
+            
+            <p id="quoteBox" class="text-gray-700 italic text-xl md:text-2xl leading-relaxed mb-8 px-2 font-medium">
+                <!-- Quote will be injected here -->
+            </p>
+            
+            <div class="flex justify-center space-x-3">
+                <div class="w-3 h-3 bg-yellow-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-3 h-3 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-3 h-3 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+            </div>
+            
+            <div class="mt-10 text-sm text-gray-500 uppercase tracking-[0.2em] font-bold border-t pt-6 border-gray-100">
+                CMS Rajajipuram I<br>
+                <span class="text-blue-400">Junior Section</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            "\"Children are not things to be molded, but people to be unfolded.\" — Jess Lair",
+            "\"The soul is healed by being with children.\" — Fyodor Dostoevsky",
+            "\"Every child is a different kind of flower, and all together, make this world a beautiful garden.\"",
+            "\"Play is often talked about as if it were a relief from serious learning. But for children play is serious learning.\" — Fred Rogers",
+            "\"Children see magic because they look for it.\"",
+            "\"While we try to teach our children all about life, our children teach us what life is all about.\"",
+            "\"To a child, 'love' is spelled T-I-M-E.\"",
+            "\"The best way to make children good is to make them happy.\" — Oscar Wilde",
+            "\"The first five years have so much to do with the next eighty.\"",
+            "\"At the end of the day, the most overwhelming key to a child's success is the positive involvement of parents.\""
+        ];
+
+        function initStars() {
+            const container = document.getElementById('starContainer');
+            const starCount = 120; // Increased density
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star-bg';
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 1.5}s`);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(star);
+            }
+        }
+
+        function spawnSparkle(x, y, isBig = false) {
+            const star = document.createElement('div');
+            star.className = 'sparkle-star';
+            star.innerHTML = Math.random() > 0.5 ? '★' : '✦';
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
+            
+            // Random explosion physics
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = isBig ? (Math.random() * 400 + 200) : (Math.random() * 300 + 100);
+            const destX = Math.cos(angle) * velocity;
+            const destY = Math.sin(angle) * velocity;
+            
+            star.style.setProperty('--x', `${destX}px`);
+            star.style.setProperty('--y', `${destY}px`);
+            star.style.setProperty('--rot', `${Math.random() * 720}deg`);
+            star.style.setProperty('--s', `${Math.random() * 1.5 + 0.5}`);
+            
+            const colors = ['#FFD93D', '#FF6B6B', '#F473B9', '#6BCB77', '#FFFFFF'];
+            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            star.style.fontSize = (isBig ? Math.random() * 25 + 15 : Math.random() * 15 + 8) + 'px';
+            star.style.animation = `sparkle-fall ${Math.random() * 0.8 + 0.6}s cubic-bezier(0.1, 0.5, 0.3, 1) forwards`;
+            
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 1500);
+        }
+
+        function createBang(x, y) {
+            const ring = document.createElement('div');
+            ring.className = 'bang-ring';
+            ring.style.left = x + 'px';
+            ring.style.top = y + 'px';
+            document.body.appendChild(ring);
+            setTimeout(() => ring.remove(), 800);
+        }
+
+        function revealWelcome(event) {
+            const entryView = document.getElementById('entryView');
+            const welcomeCard = document.getElementById('welcomeCard');
+            const quoteBox = document.getElementById('quoteBox');
+            const wrapper = document.getElementById('wrapper');
+            
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteBox.innerText = randomQuote;
+
+            const rect = event.target.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Initial bang effect
+            createBang(centerX, centerY);
+            
+            // Multi-layered star burst
+            for(let i = 0; i < 60; i++) {
+                setTimeout(() => spawnSparkle(centerX, centerY, i > 40), i * 5);
+            }
+
+            wrapper.style.background = 'linear-gradient(135deg, #fefce8 0%, #f0f9ff 100%)';
+
+            entryView.style.opacity = '0';
+            entryView.style.transform = 'scale(0.5) translateY(-100px)';
+            
+            setTimeout(() => {
+                entryView.classList.add('hidden');
+                welcomeCard.classList.remove('hidden');
+                
+                // Secondary burst for the card reveal
+                const wCenterX = window.innerWidth / 2;
+                const wCenterY = window.innerHeight / 2;
+                for(let i = 0; i < 40; i++) {
+                    setTimeout(() => spawnSparkle(wCenterX, wCenterY, true), i * 10);
+                }
+
+                setTimeout(() => {
+                    welcomeCard.classList.add('active');
+                }, 50);
+            }, 600);
+        }
+    </script>
+</body>
+</html>
